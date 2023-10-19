@@ -55,7 +55,7 @@ The working hypotheses are therefore:
 
 > H2: There is no perfect positive between Malcom et al's ranking of locations by climate vulnerability and our reproduction study's ranking of locations by climate vulnerability.
 
-We will evaluate each of these hypotheses using a Spearman's Rho Correlation. A failure to reject these hypotheses would indicate that our results do not exactly match those of the original authors. A positive correlation approaching 1 would indicate a partial reproduction
+We will evaluate each of these hypotheses using a Spearman's Rho Correlation. A failure to reject these hypotheses would indicate that our results do not exactly match those of the original authors. A positive correlation approaching 1 would indicate a partial reproduction.
 
 ### Original study design
 
@@ -341,7 +341,6 @@ paste(nrow(ta_v), "features after removing conservation areas and water bodies")
 Find areas of Lake Malawi features that are actually land by buffering lakes by 500 meters and clipping the Lake Malawi TA features.
 Calculate new unique second level ID's as 1000 times the row number.
 Remove splinter polygons by selecting polygons over 4 km\^2 with centroids intersecting livelihood zones.
-
 ```{r extract-lake-Malawi-errors, warning = F, message = F}
 # create a buffer around the lakes to clip out water from error TAs
 lake_buffer <- lakes_v %>%
@@ -845,6 +844,7 @@ rm(list=c("dhsclusters", "dhshh", "cluster_ta", "hh_capacity_t", "ta_capacity_t"
 Load aggregated public adaptive capacity data.
 
 ```{r load-TA-adaptive-capacity}
+#RUN CODE FROM HERE AFTER DHS
 ta_capacity_t <- readRDS(here(public_d, "adaptive_capacity.RDS"))
 ta_v <- st_read(here(public_d, "ta_v.gpkg" ))
 head(ta_capacity_t)
@@ -1297,6 +1297,10 @@ vuln_map
 ```
 ### Turn Vulnerability Raster into TA zones
 
+**Unplanned deviation**
+We make a new map visualizing mean vulnerability scores for TAs using the ***aggregate*** function, contrasting the visualization of Fig 5. 
+Change the scale fill from continuous to "binned."
+
 ```{r compute zonal stats}
 #calculate mean vulnerability from raster in TAs
 mean_Vuln_TAS <- aggregate(vulnerability_r, ta_v, FUN = mean) %>%
@@ -1304,20 +1308,20 @@ mean_Vuln_TAS <- aggregate(vulnerability_r, ta_v, FUN = mean) %>%
 
 #visualize the TA vulnerabilities 
 # ta_vuln_map <-
-ggplot() + 
-  geom_sf(
-    data = mean_Vuln_TAS, 
-    aes(fill = vulnerability), 
-    size = .2, 
-    color = "grey98"
-  ) +
-  scale_fill_continuous(
-    name = "Vulnerability Mean/Scores", 
-    low="lemonchiffon1", 
-    high="lightcoral"
-  ) +
-  scale_y_continuous(breaks=seq(-17,-10,1)) +
-  scale_x_continuous(breaks=seq(33,36,1))
+#ggplot() + 
+ # geom_sf(
+  #  data = mean_Vuln_TAS, 
+   # aes(fill = vulnerability), 
+   # size = .2, 
+  #  color = "grey98"
+#  ) +
+ # scale_fill_continuous(
+  #  name = "Vulnerability Mean/Scores", 
+   # low="lemonchiffon1", 
+  #  high="lightcoral"
+#  ) +
+ # scale_y_continuous(breaks=seq(-17,-10,1)) +
+#  scale_x_continuous(breaks=seq(33,36,1))
 
 # change to binned scale
 ggplot() + 
@@ -1469,8 +1473,47 @@ write_stars(vulnerability_r, here(public_d, "fig5rp.tif"), layer = "rpv")
 
 # Discussion
 
+The purpose of this study was to reproduce Malcomb's Vulnerability Modeling Study in Malawi, and to test how effectively we were able to do so.
+We used Spearmans' Rho Correlation to determine if our results exactly matched the original author's results. 
+A failure to reject these hypotheses would indicate that our results do not exactly match those of the original authors.
+A positive correlation approaching 1 would indicate a partial reproduction.
+
+Some variation from the original study was inevitable, given that some of the data sources from the original study were unavailable, including DHS data. 
+We calculated **adaptive capacity** and **vulnerability**,
+and compared our scores to the values calculated in the original study. 
+
+As noted above, the reproduction study used the indicators and weights as they were described in the original study.
+One of the bigger issues with Malcomb's choice to black box the interview process and the way by which he created weights for his different variables. Those interested in reproducing the study would have a harder time of making different decisions about the way they weight different variables, given that Malcomb's methods and reasoning for his weighting is unavailable. 
+
+
+##Adaptive capacity
+
+The Spearman's Rho correlation coefficient was 0.7891, indicating that there is a strong positive correlation between the adaptive capacity scores of the original study and of our reproduction. Essentially, our reproduction models had values which were fairly similar to the values of the original model. This means we fail to reject the hypothesis that we would be unable to perfectly replicate Malcomb's original study with regards to adaptive capacity.
+
+We also mapped the differences between the original study's adaptive capacity scores and the adaptive capacity scores calculated in our reproduction, subtracting scores of the original from the reproduction. Within TAs, the differences were often negative, indicating that there were many instances in which our reproduction predicted values smaller than the original.
+
+
+##Vulnerability
+
+The Spearman's Rho correlation coefficient for vulnerability scores was 0.197, indicating that there was a weak positive correlation between the vulnerability scores of the original study and of the reproduction. This value indicates that we were unable to perfectly replicate the author's model, nor were we even close in getting the same values. 
+
+After mapping the differences in vulnerability scores from the original study's raster to the reproduction of Figure 5, it appears at a quick glance that the original generally expected higher values of vulnerability, especially in the southern regions of Malawi. 
+
+The graph comparing vulnerability scores between the original study and the reproduction illustrates that there is little correlation; the data points transposed from the graph to not adhere to any particular pattern, and are widely scattered across the graph.
+
+#New Visualization for Vulnerability
+One modification we made to the original study was changing one of Malcomb's visualizations. Originally, he had vulnerability mapped as a raster, showing a continuous range of scores (Fig 5). However, this is not the best way to visualize the data: stakeholders or policymakers may be able to implement policies for specific recognized areas, such as TAs, but it is a lot harder to do so with a raster of all of Malawi, with no smaller boundaries indicated. As such, we made a new map visualizing the mean vulnerability scores of each TA. Esentially, all of the vulnerability values were averaged out per TA, and the mean vulnerability value was reported. Additionally, given that this data is not continuous, we binned the scale bar. With this new visualization, it becomes clear that there are certain TAs with higher vulnerability, rather than ambiguous areas. 
+
 # Conclusions
 
+We were unable to reject the working hypotheses that our reproduction would deviate from the original study given our correlation coefficients. For adaptive capacity and vulnerability, both of our Spearmen correlation coefficients were below 1, meaning that we were unable to perfectly replicate the original study.
+However, the Spearman's correlation coefficent was much higher for adaptive capacity than for vulnerability, meaning that our reproduction of adaptive capacity was more robust than for vulnerability. 
+The values for both adaptive capacity and vulnerability values for our reproduction tended to be smaller than the original values calculated in the original study.
+
+Regarding its significance within the greater context of reproducibility for GIS science, our reproduction of Malcomb's study was successful in that we were able to reproduce the figures from the original study in a new computational environment.
+We were also able to implement unplanned deviations that we felt would improve the study, including different visualization choices. 
+However, our reproduction was imperfect for several reasons.
+For one, access to data was one hindrance that made a perfect reproduction fairly difficult.
 
 # Integrity Statement
 
