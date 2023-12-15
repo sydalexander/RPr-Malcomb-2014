@@ -1297,7 +1297,7 @@ vuln_map
 ```
 ### Turn Vulnerability Raster into TA zones
 
-**Unplanned deviation**
+**Planned deviation**
 We make a new map visualizing mean vulnerability scores for TAs using the ***aggregate*** function, contrasting the visualization of Fig 5. 
 Change the scale fill from continuous to "binned."
 
@@ -1332,9 +1332,9 @@ ggplot() +
     color = "grey98"
   ) +
   scale_fill_binned(
-    name = "Vulnerability Mean/Scores", 
-    low="lemonchiffon1", 
-    high="lightcoral"
+    name = "Mean Vulnerability Score", 
+    low = "#FFFF75",
+    high = "#CF4611"
   ) +
   scale_y_continuous(breaks=seq(-17,-10,1)) +
   scale_x_continuous(breaks=seq(33,36,1))
@@ -1482,7 +1482,7 @@ Some variation from the original study was inevitable, given that some of the da
 We calculated **adaptive capacity** and **vulnerability**,
 comparing our scores to the values calculated in the original study. 
 
-##Adaptive capacity
+## Adaptive capacity
 
 The Spearman's Rho correlation coefficient was 0.7891, indicating that there is a strong positive correlation between the adaptive capacity scores of the original study and of our reproduction. Essentially, our reproduction models had values which were fairly similar to the values of the original model. This means we fail to reject the hypothesis that we would be unable to perfectly replicate Malcomb's original study with regards to adaptive capacity.
 
@@ -1519,13 +1519,18 @@ The values for both adaptive capacity and vulnerability values for our reproduct
 
 Regarding its significance within the greater context of reproducibility for GIS science, there are a couple different implications for Malcomb's study.
 Malcomb's study is supposed to be one that is fairly easily reproducible.
-Although we were able to reproduce the figures from the original study in a new computational environment, we were unable to perfecly reproduce its results. 
-We were also able to implement unplanned deviations that we felt would improve the study, including different visualization choices.
+However, we were able to reproduce the figures from the original study in a new computational environment, we were unable to perfecly reproduce its results. 
+We were able to implement unplanned deviations that we felt would improve the study, including different visualization choices.
 However, there were several obstacles preventing a perfect reproduction.
 For one, access to data was one hindrance that made a perfect reproduction fairly difficult.
 Unclear methodology outlined by Malcomb also made a reproduction of his study more difficult.
 For one, there was little elaboration on how he produced his figures.
-Furthermore, there were several subjective decisions made throughout Malcomb's study which were not elaborated upon, such as the decisions made to create weights based on the results from the interviews.
+There were several subjective decisions made throughout Malcomb's study which were not elaborated upon, such as the decisions made to create weights based on the results from the interviews.
+If reproducible research is becoming the norm for geographic research, then our reproduction of Malcbomb's study illustrates the significance of methodology that is thorough and easy to follow.
+In this case, it is not quite right to call a study reproducible if it does not have all the proper elements of a reproducible study. 
+In this regard, access to original data sources is also important; it is very difficult to reproduce research if the data sources are not easily accessible.
+These two elements in Malcomb's study (or lack thereof) illustrate the benefits of using a research compendium: putting data, and clear methodolgy all in one place could improve reproducibility by allowing future researchers to find all the necessary components in one place. 
+
 
 # Integrity Statement
 

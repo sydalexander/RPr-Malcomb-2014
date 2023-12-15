@@ -18,5 +18,5 @@ I will also write a discussion and conclusions section.
 # Plans for Visualization
 I will visualize this result by creating a new map showing the mean vulnerability scores for each TA. Rather than having the scale/data be continuous, I will break it up into ranges, which makes more sense because this is not continuous data. 
 
-#Results
+# Results
 This will be a better visualization because it would be easier for stakeholders to implement changes in specific TAs, rather than areas on a raster. It will be easier to identify specific areas which are at risk based on a map broken up by TAs; TAs with high vulnerability scores will be easily identifiable. 
